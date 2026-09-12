@@ -15,7 +15,6 @@ export class UserService {
       password: '123456',
       role: 'ADMIN',
       active: true,
-      instant: new Date(),
     },
   ];
 
