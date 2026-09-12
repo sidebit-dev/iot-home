@@ -9,7 +9,7 @@ GET {{baseURL}}
 GET {{baseURL}}/users/2
 
 ### listAll
-GET {{baseURL}}/users
+GET {{baseURL}}/users/?limit=10&offset=0
 
 ### create
 POST {{baseURL}}/users

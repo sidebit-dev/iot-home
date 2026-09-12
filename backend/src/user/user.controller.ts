@@ -10,14 +10,17 @@ import {
   Patch,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 
 @Controller('users')
 export class UserController {
   @HttpCode(HttpStatus.OK)
   @Get()
-  async findAll() {
-    return { users: [] };
+  async findAll(@Query() pagination: any) {
+    const { limit = 10, offset = 0 } = pagination;
+    console.log(pagination);
+    return `Lista todos usuários. Limit=${limit}, offset=${offset}`;
   }
 
   @Get(':id')
