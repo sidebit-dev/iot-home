@@ -3,7 +3,10 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Put,
@@ -11,41 +14,45 @@ import {
 
 @Controller('users')
 export class UserController {
+  @HttpCode(HttpStatus.OK)
+  @Get()
+  async findAll() {
+    return { users: [] };
+  }
+
+  @Get(':id')
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return { user: {}, id };
+  }
+
   @Post()
   async create(@Body() body: any) {
     return { body };
   }
 
-  @Get()
-  async listAll() {
-    return { users: [] };
-  }
-
-  @Get(':id')
-  async listOne(@Param() params: any) {
-    return { user: {}, params };
-  }
-
   @Put(':id')
-  async update(@Body() body: any, @Param() params: any) {
+  async update(@Body() body: any, @Param('id', ParseIntPipe) id: number) {
     return {
       method: 'put',
       body,
-      params,
+      id,
     };
   }
 
   @Patch(':id')
-  async updatePartial(@Body() body: any, @Param() params: any) {
+  async updatePartial(
+    @Body() body: any,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
     return {
       method: 'patch',
       body,
-      params,
+      id,
     };
   }
 
   @Delete(':id')
-  async delete(@Param() params: any) {
-    return { params };
+  async delete(@Param('id', ParseIntPipe) id: number) {
+    return { id };
   }
 }

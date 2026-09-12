@@ -4,7 +4,41 @@
 # Skynet
 GET {{baseURL}}
 
-### Rotas de Users
+# Rotas de Users
+### listOne
+GET {{baseURL}}/users/2
 
-# Create
+### listAll
+GET {{baseURL}}/users
+
+### create
+POST {{baseURL}}/users
+Content-Type: application/json
+
+{
+	"name": "Gafanha Ramos",
+	"email": "gafa@gmail.com",
+	"password": "123456"
+}
+
+### upadateAll
+PUT  {{baseURL}}/users/1
+Content-Type: application/json
+
+{
+	"name": "Gafanha Ramos",
+	"email": "gafa@gmail.com",
+	"password": "123456"
+}
+
+### upadatePartial
+PATCH {{baseURL}}/users/1
+Content-Type: application/json
+
+{
+	"name": "Gafanha Ramos"
+}
+
+### upadatePartial
+DELETE {{baseURL}}/users/1
 
