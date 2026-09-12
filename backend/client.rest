@@ -44,7 +44,7 @@ Content-Type: application/json
 {
 	"name": "Gafanha da Silva",
 	"email": "gafa@gmail.com",
-	"role": "CLIENTE"
+	"active": false
 }
 
 ### delete
