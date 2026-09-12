@@ -3,3 +3,8 @@
 ### Rota de Teste
 # Skynet
 GET {{baseURL}}
+
+### Rotas de Users
+
+# Create
+
