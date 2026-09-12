@@ -16,19 +16,25 @@ POST {{baseURL}}/users
 Content-Type: application/json
 
 {
-	"name": "Gafanha Ramos",
-	"email": "gafa@gmail.com",
-	"password": "123456"
+	"name": "Migue Ramos",
+	"email": "miguel@gmail.com",
+	"password": "123456",
+	"role": "CLIENTE",
+	"active": true,
+	"instant": "2026-09-12T13:26:27.957Z"
 }
 
 ### upadateAll
-PUT  {{baseURL}}/users/1
+PUT  {{baseURL}}/users/4
 Content-Type: application/json
 
 {
-	"name": "Gafanha Ramos",
-	"email": "gafa@gmail.com",
-	"password": "123456"
+	"name": "Migue Ramos",
+	"email": "miguel@gmail.com",
+	"password": "123456",
+	"role": "ADMIN",
+	"active": true,
+	"instant": "2026-09-12T13:26:27.957Z"
 }
 
 ### upadatePartial
@@ -36,7 +42,7 @@ PATCH {{baseURL}}/users/1
 Content-Type: application/json
 
 {
-	"name": "Gafanha Ramos"
+	"role": "ADMIN"
 }
 
 ### upadatePartial
