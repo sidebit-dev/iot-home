@@ -1,5 +1,8 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './entities/User';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdatePutUserDto } from './dto/update-put-user.dto';
+import { UpdatePatchUserDto } from './dto/update-patch-user.dto';
 
 @Injectable()
 export class UserService {
@@ -15,51 +18,81 @@ export class UserService {
       instant: new Date(),
     },
   ];
+
+  throwNotFoundError() {
+    // throw new HttpException('Usuário não encontrado...', HttpStatus.NOT_FOUND);
+    throw new NotFoundException('Usuário não encontrado...');
+  }
+
   async findAll() {
     return this.users;
   }
 
   async findOne(id: number) {
     const user = this.users.find((item) => item.id === id);
+    // const userExistenteIndex = this.users.findIndex((item) => item.id === id);
 
     if (user) return user;
-
-    throw new HttpException('Usuário não encontrado...', HttpStatus.NOT_FOUND);
+    this.throwNotFoundError();
   }
 
-  async create(body: any) {
+  async create(createUserDto: CreateUserDto) {
     this.lastId++;
     const id = this.lastId;
     const newUser = {
       id,
-      ...body,
+      ...createUserDto,
+      role: 'CLIENTE',
+      active: true,
+      instant: new Date(),
     };
     this.users.push(newUser);
     return newUser;
   }
 
-  async updateAll(data: any, id: number) {
-    return { data };
+  async updateAll(id: number, updatePutUserDto: UpdatePutUserDto) {
+    const userExistenteIndex = this.users.findIndex((item) => item.id === id);
+
+    if (userExistenteIndex < 0) {
+      this.throwNotFoundError();
+    }
+
+    const userExistente = this.users[userExistenteIndex];
+
+    this.users[userExistenteIndex] = {
+      ...userExistente,
+      ...updatePutUserDto,
+    };
+    return this.users[userExistenteIndex];
   }
 
-  async updatePartial(body: any, id: number) {
+  async updatePartial(id: number, updatePatchUserDto: UpdatePatchUserDto) {
     const userExistenteIndex = this.users.findIndex((item) => item.id === id);
-    if (userExistenteIndex >= 0) {
-      const userExistente = this.users[userExistenteIndex];
 
-      this.users[userExistenteIndex] = {
-        ...userExistente,
-        ...body,
-      };
-      return this.users[userExistenteIndex];
+    if (userExistenteIndex < 0) {
+      this.throwNotFoundError();
     }
+
+    const userExistente = this.users[userExistenteIndex];
+
+    this.users[userExistenteIndex] = {
+      ...userExistente,
+      ...updatePatchUserDto,
+    };
+    return this.users[userExistenteIndex];
   }
 
   async delete(id: number) {
-    const userExistIndex = this.users.findIndex((item) => item.id === id);
-    if (userExistIndex >= 0) {
-      this.users.splice(userExistIndex, 1);
+    const userExistenteIndex = this.users.findIndex((item) => item.id === id);
+
+    if (userExistenteIndex < 0) {
+      this.throwNotFoundError();
     }
-    return { id };
+
+    const user = this.users[userExistenteIndex];
+
+    this.users.splice(userExistenteIndex, 1);
+
+    return user;
   }
 }

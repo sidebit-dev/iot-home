@@ -19,32 +19,32 @@ Content-Type: application/json
 	"name": "Migue Ramos",
 	"email": "miguel@gmail.com",
 	"password": "123456",
-	"role": "CLIENTE",
+	"role": "ADMIN",
 	"active": true,
 	"instant": "2026-09-12T13:26:27.957Z"
 }
 
 ### upadateAll
-PUT  {{baseURL}}/users/4
+PUT {{baseURL}}/users/2
 Content-Type: application/json
 
 {
 	"name": "Migue Ramos",
 	"email": "miguel@gmail.com",
-	"password": "123456",
+	"password": "123489",
 	"role": "ADMIN",
 	"active": true,
 	"instant": "2026-09-12T13:26:27.957Z"
 }
 
 ### upadatePartial
-PATCH {{baseURL}}/users/1
+PATCH {{baseURL}}/users/2
 Content-Type: application/json
 
 {
-	"role": "ADMIN"
+	"role": "CLIENTE"
 }
 
-### upadatePartial
-DELETE {{baseURL}}/users/1
+### delete
+DELETE {{baseURL}}/users/2
 
