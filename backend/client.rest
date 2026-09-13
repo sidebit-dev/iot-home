@@ -18,10 +18,7 @@ Content-Type: application/json
 {
 	"name": "Migue Ramos",
 	"email": "miguel@gmail.com",
-	"password": "123456",
-	"role": "ADMIN",
-	"active": true,
-	"instant": "2026-09-12T13:26:27.957Z"
+	"password": "123456"
 }
 
 ### upadateAll
@@ -48,5 +45,5 @@ Content-Type: application/json
 }
 
 ### delete
-DELETE {{baseURL}}/users/3
+DELETE {{baseURL}}/users/1
 

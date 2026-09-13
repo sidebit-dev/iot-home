@@ -5,6 +5,7 @@ import { UpdatePutUserDto } from './dto/update-put-user.dto';
 import { UpdatePatchUserDto } from './dto/update-patch-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { userInfo } from 'os';
 
 @Injectable()
 export class UserService {
@@ -35,7 +36,6 @@ export class UserService {
   }
 
   async findOne(id: number) {
-    // const user = this.users.find((item) => item.id === id);
     const user = await this.userRepository.findOne({
       where: {
         id,
@@ -47,17 +47,14 @@ export class UserService {
   }
 
   async create(createUserDto: CreateUserDto) {
-    this.lastId++;
-    const id = this.lastId;
     const newUser = {
-      id,
       ...createUserDto,
       role: 'CLIENTE',
       active: true,
       instant: new Date(),
     };
-    this.users.push(newUser);
-    return newUser;
+    const user = await this.userRepository.create(newUser);
+    return this.userRepository.save(user);
   }
 
   async updateAll(id: number, updatePutUserDto: UpdatePutUserDto) {
@@ -93,16 +90,14 @@ export class UserService {
   }
 
   async delete(id: number) {
-    const userExistenteIndex = this.users.findIndex((item) => item.id === id);
+    const user = await this.userRepository.findOne({
+      where: {
+        id,
+      },
+    });
 
-    if (userExistenteIndex < 0) {
-      this.throwNotFoundError();
-    }
+    if (!user) return this.throwNotFoundError();
 
-    const user = this.users[userExistenteIndex];
-
-    this.users.splice(userExistenteIndex, 1);
-
-    return user;
+    return this.userRepository.remove(user);
   }
 }
