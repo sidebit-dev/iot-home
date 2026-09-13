@@ -22,7 +22,7 @@ Content-Type: application/json
 }
 
 ### upadateAll
-PUT {{baseURL}}/users/1
+PUT {{baseURL}}/users/2
 Content-Type: application/json
 
 {
@@ -30,8 +30,7 @@ Content-Type: application/json
 	"email": "miguel@gmail.com",
 	"password": "123489",
 	"role": "ADMIN",
-	"active": true,
-	"instant": "2026-09-12T13:26:27.957Z"
+	"active": true
 }
 
 ### upadatePartial
@@ -39,9 +38,8 @@ PATCH {{baseURL}}/users/2
 Content-Type: application/json
 
 {
-	"name": "Gafanha da Silva",
-	"email": "gafa@gmail.com",
-	"active": false
+	"password": "123456",	
+	"role": "ADMIN"
 }
 
 ### delete

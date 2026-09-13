@@ -13,17 +13,6 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
-  private lastId = 1;
-  private users: User[] = [
-    {
-      id: 1,
-      name: 'Migue Ramos',
-      email: 'miguel@gmail.com',
-      password: '123456',
-      role: 'ADMIN',
-      active: true,
-    },
-  ];
 
   throwNotFoundError() {
     // throw new HttpException('Usuário não encontrado...', HttpStatus.NOT_FOUND);
@@ -58,42 +47,38 @@ export class UserService {
   }
 
   async updateAll(id: number, updatePutUserDto: UpdatePutUserDto) {
-    const userExistenteIndex = this.users.findIndex((item) => item.id === id);
-
-    if (userExistenteIndex < 0) {
-      this.throwNotFoundError();
-    }
-
-    const userExistente = this.users[userExistenteIndex];
-
-    this.users[userExistenteIndex] = {
-      ...userExistente,
+    const user = await this.userRepository.preload({
+      id,
       ...updatePutUserDto,
-    };
-    return this.users[userExistenteIndex];
+    });
+
+    if (!user) return this.throwNotFoundError();
+
+    await this.userRepository.save(user);
+    return user;
   }
 
   async updatePartial(id: number, updatePatchUserDto: UpdatePatchUserDto) {
-    const userExistenteIndex = this.users.findIndex((item) => item.id === id);
+    // Tem restringir os campos de alteração como no exemplo:
+    // const partialUpdatePatchUserDto = {
+    //   role: updatePatchUserDto?.role,
+    //   active: updatePatchUserDto?.active,
+    // };
 
-    if (userExistenteIndex < 0) {
-      this.throwNotFoundError();
-    }
-
-    const userExistente = this.users[userExistenteIndex];
-
-    this.users[userExistenteIndex] = {
-      ...userExistente,
+    const user = await this.userRepository.preload({
+      id,
       ...updatePatchUserDto,
-    };
-    return this.users[userExistenteIndex];
+    });
+
+    if (!user) return this.throwNotFoundError();
+
+    await this.userRepository.save(user);
+    return user;
   }
 
   async delete(id: number) {
-    const user = await this.userRepository.findOne({
-      where: {
-        id,
-      },
+    const user = await this.userRepository.findOneBy({
+      id,
     });
 
     if (!user) return this.throwNotFoundError();
