@@ -3,9 +3,15 @@ import { User } from './entities/User';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePutUserDto } from './dto/update-put-user.dto';
 import { UpdatePatchUserDto } from './dto/update-patch-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
   private lastId = 1;
   private users: User[] = [
     {
@@ -24,12 +30,17 @@ export class UserService {
   }
 
   async findAll() {
-    return this.users;
+    const users = await this.userRepository.find();
+    return users;
   }
 
   async findOne(id: number) {
-    const user = this.users.find((item) => item.id === id);
-    // const userExistenteIndex = this.users.findIndex((item) => item.id === id);
+    // const user = this.users.find((item) => item.id === id);
+    const user = await this.userRepository.findOne({
+      where: {
+        id,
+      },
+    });
 
     if (user) return user;
     this.throwNotFoundError();
